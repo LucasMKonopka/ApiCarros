@@ -136,6 +136,22 @@ class _CarroPageState extends State<CarroPage> {
                       if (value == null || value.trim().isEmpty) {
                         return "Preencha o ano";
                       }
+
+                      final ano = int.tryParse(value);
+                      if (ano == null) {
+                        return "O ano deve ser um número válido";
+                      }
+
+                      if (ano < 1800) {
+                        return "O ano não pode ser menor que 1800";
+                      }
+                      if (ano > 2025) {
+                        return "O ano não pode ser maior que 2025";
+                      }
+                      if (ano < 0) {
+                        return "O ano não pode ser negativo";
+                      }
+
                       return null;
                     },
                     keyboardType: TextInputType.number,
