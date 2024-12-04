@@ -164,22 +164,54 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                       TextButton(
-                        child: const Text("Excluir",
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 20.0)),
-                        onPressed: () {
-                          helper.deleteCarro(carros[index].id);
-                          setState(() {
-                            carros.removeAt(index);
+                          child: const Text("Excluir",
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 20.0)),
+                          onPressed: () {
                             Navigator.pop(context);
-                          });
-                        },
-                      ),
+                            _showDeleteConfirmation(context, index);
+                          }),
                     ],
                   ),
                 );
               });
         });
+  }
+
+  void _showDeleteConfirmation(BuildContext context, int index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Confirmar Exclusão"),
+          content: Text("Você tem certeza que deseja excluir este carro?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancelar"),
+            ),
+            TextButton(
+              onPressed: () {
+                helper.deleteCarro(carros[index].id);
+                setState(() {
+                  carros.removeAt(index);
+                });
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Carro excluído com sucesso!")),
+                );
+              },
+              child: const Text(
+                "Excluir",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _orderList(OrderOptions result) {
