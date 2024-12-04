@@ -9,7 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 enum OrderOptions{orderAZ, orderZA}
 
-// flutter run --no-sound-null-safety
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -40,8 +40,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Lista de Carros"),
-        backgroundColor: Colors.blue,
+        toolbarHeight: 80.0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            
+            Image.asset('assets/imgs/logo.jpg',
+                fit: BoxFit.contain, height: 50),
+                const Text("  Lista de Carros"),
+          ],
+        ),
+        backgroundColor: Colors.black,
+        
         centerTitle: true,
         actions: <Widget>[
           PopupMenuButton<OrderOptions>(itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
@@ -62,7 +72,7 @@ class _HomePageState extends State<HomePage> {
           showCarroPage();
         },
         child: const Icon(Icons.add),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.grey [700],
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(10.0),

@@ -23,6 +23,8 @@ class _CarroPageState extends State<CarroPage> {
   List<String> categorias = ['Sedan', 'SUV', 'Hatch', 'Caminhão'];
   String _categoriaSelecionada;
 
+  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -46,7 +48,8 @@ class _CarroPageState extends State<CarroPage> {
     child: Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        toolbarHeight: 80.0,
+        backgroundColor: Colors.black,
         title: Text(_editedCarro.marca ?? "Novo Carro"),
         centerTitle: true,
       ),
@@ -59,7 +62,7 @@ class _CarroPageState extends State<CarroPage> {
           }
         },
         child: const Icon(Icons.save),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.grey [700],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(10.0),
@@ -103,7 +106,7 @@ class _CarroPageState extends State<CarroPage> {
                   _editedCarro.modelo = text;
                 });
               },
-              //keyboardType: TextInputType.emailAddress,
+              
             ),
             SizedBox(height: 10.0),
             TextField(
@@ -153,26 +156,36 @@ class _CarroPageState extends State<CarroPage> {
     );
   }
 
-  Future<bool> requestPop(){
-    if(_userEdited){
-      showDialog(context: context, builder: (context){
+  Future<bool> requestPop() async {
+  if (_userEdited) {
+    bool shouldLeave = await showDialog(
+      context: context,
+      builder: (context) {
         return AlertDialog(
           title: const Text("Descartar Alterações"),
-          content: const Text("Se sair, as alterações serão perdidas"),
+          content: const Text("Se sair, as alterações serão perdidas. Deseja continuar?"),
           actions: <Widget>[
-            TextButton(onPressed: (){
-              Navigator.pop(context);
-            }, child: const Text("Cancelar"),),
-            TextButton(onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-            }, child: const Text("sim"),),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Não descarta
+              },
+              child: const Text("Cancelar"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Descartar alterações
+              },
+              child: const Text("Sim"),
+            ),
           ],
         );
-      });
-      return Future.value(false);
-    }else{
-      return Future.value(true);
-    }
+      },
+    );
+
+    return Future.value(shouldLeave ?? false);
+  } else {
+    return Future.value(true);
   }
+}
+
 }
